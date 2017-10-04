@@ -52,7 +52,7 @@ passport.use(new LocalStrategy(
             .catch(function(err) {
                 throw(err);
             })
-            .then(function(user) {
+            .then(function(user) {g
                 console.log(user);
                 //checking if array in not empty
                 if(user.length > 0) {
