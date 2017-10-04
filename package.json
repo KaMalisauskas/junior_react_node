@@ -37,6 +37,7 @@
     "serve": "nodemon src/index.js --exec babel-node --presets es2015,stage-2",
     "server-build": "babel src -d dist --presets es2015,stage-2",
     "server-start": "node server/dist/index.js",
+    "prod": "npm run server-start & npm run start",
     "prestart": "npm run build"
   },
   "engines": {
