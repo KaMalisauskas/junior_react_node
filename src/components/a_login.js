@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import AdminLogin from './AdminLogin';
+import axios from 'axios';
+import Auth from './../modules/Auth';
 
 
 class A_Login extends Component {
@@ -8,12 +9,11 @@ class A_Login extends Component {
         super(props);
         this.state = {
 
-            Username: '',
-            Password: ''
+            username: '',
+            password: ''
 
         };
 
-        this.AdminLogin = new AdminLogin();
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -26,9 +26,22 @@ class A_Login extends Component {
     handleSubmit(event) {
         console.log(this.state);
         event.preventDefault();
-        this.AdminLogin.sendData(this.state.value);
-        this.props.history.push('/admin');
+
+        axios.post('http://localhost:3003/api/auth/login',
+           this.state
+        )
+            .then(response => {
+                console.log(response);
+                Auth.Authenticate(response.data.token);
+                this.props.history.push('/admin');
+            })
+            .catch(error => {
+               console.log(error.response);
+                //this.setState({errors: error.response.data.error});
+            });
+        this.props.history.push('/admin/login');
     }
+
 
 
     render() {
@@ -36,11 +49,11 @@ class A_Login extends Component {
 
             <div className='a_login'>
 
-                <h1>Registration</h1>
+                <h1>Login</h1>
 
                 <form onSubmit={this.handleSubmit.bind(this)} >
-                    Username: <input type="text" value={this.state.username} onChange={e => this.setState({ Username: e.target.value})} />
-                    Password: <input type="password" value={this.state.password} onChange={e => this.setState({ Password: e.target.value})} />
+                    Username: <input type="text" value={this.state.username} onChange={e => this.setState({ username: e.target.value})} />
+                    Password: <input type="password" value={this.state.password} onChange={e => this.setState({ password: e.target.value})} />
                     <input type="submit" />
 
                 </form>
